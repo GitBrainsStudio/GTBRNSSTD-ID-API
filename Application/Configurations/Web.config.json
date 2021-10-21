@@ -1,0 +1,9 @@
+{
+    "fastApiTitle" : "Authentication Service",
+    "fastApiVersion" : "0.X",
+    "fastApiDescription" : "Микросервис аутентификации",
+    "uvicornHost" : "0.0.0.0",
+    "uvicornPort" : 8000,
+    "tokenSecretKey" : "abracadabra",
+    "tokenAlgorithm" : ["HS256"]
+}
