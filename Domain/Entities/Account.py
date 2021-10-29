@@ -1,3 +1,5 @@
+from logging import log
+import logging
 from sqlalchemy.orm import relationship
 from Domain.Entities.Base import Base, AccountsRoles
 from sqlalchemy import Column, String, Integer
@@ -24,9 +26,20 @@ class Account(Base) :
         password,
         roles) :
     
-        self.Id = uuid.uuid4().hex
+        self.Id = id
         self.Login = login
         self.Password = password
         self.Roles = roles
+
+    def Update(
+        self,
+        login,
+        password,
+        roles
+    ) :
+        self.Login = login
+        self.Password = password
+        self.Roles = roles
+
 
     

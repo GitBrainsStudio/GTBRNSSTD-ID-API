@@ -1,9 +1,6 @@
-import uuid
-from sqlalchemy.orm import relationship
 from sqlalchemy.sql.schema import ForeignKey
 from Domain.Entities.Base import Base
 from sqlalchemy import Column, String, Integer
-from Domain.Entities.Client import Client
 
 
 
@@ -13,16 +10,19 @@ class Role(Base) :
 
     Id = Column('id', String , primary_key=True)
     Name = Column('name', String)
-    ClientId = Column('client_id', String, ForeignKey(Client.Id))
+    Description = Column('description', String)
+    ApplicationId = Column('application_id', String, ForeignKey('applications.id'))
 
     def __init__(
         self,
         id,
         name,
-        clientId) :
+        description,
+        applicationId) :
 
-        self.Id = uuid.uuid4().hex
+        self.Id = id
         self.Name = name
-        self.ClientId = clientId
+        self.Description = description
+        self.ApplicationId = applicationId
 
 

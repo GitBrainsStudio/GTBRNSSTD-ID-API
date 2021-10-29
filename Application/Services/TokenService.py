@@ -1,4 +1,3 @@
-from Application.Dtos.User import User
 from starlette.requests import Request
 from fastapi import HTTPException
 import jwt
@@ -16,7 +15,7 @@ class TokenService() :
         try:
             token = request.headers.get('authorization', None)
             payload = jwt.decode(token, key=self._configurationService.TokenSecretKey, algorithms=self._configurationService.TokenAlgorithm)
-            self._userDto = User(payload['user'])
+            """ self._userDto = User(payload['user']) """
 
         except Exception:
             raise  HTTPException(status_code=401)
