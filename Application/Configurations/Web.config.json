@@ -5,5 +5,5 @@
     "uvicornHost" : "0.0.0.0",
     "uvicornPort" : 8000,
     "tokenSecretKey" : "abracadabra",
-    "tokenAlgorithm" : ["HS256"]
+    "tokenAlgorithm" : "HS256"
 }

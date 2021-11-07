@@ -1,3 +1,6 @@
+from logging import log
+import logging
+from typing import List
 from sqlalchemy.orm import relationship
 from Domain.Entities.Base import Base, AccountsRoles
 from sqlalchemy import Column, String, Integer
@@ -12,7 +15,7 @@ class Account(Base) :
     Id = Column('id', String , primary_key=True)
     Login = Column('login', String)
     Password =  Column('password', String)
-    Roles:Role = relationship(
+    Roles:List[Role] = relationship(
         'Role',
         secondary=AccountsRoles,
         lazy='joined')
@@ -24,9 +27,35 @@ class Account(Base) :
         password,
         roles) :
     
-        self.Id = uuid.uuid4().hex
+        self.Id = id
         self.Login = login
         self.Password = password
         self.Roles = roles
+
+    def Update(
+        self,
+        login,
+        password,
+        roles
+    ) :
+        self.Login = login
+        self.Password = password
+        self.Roles = roles
+
+
+    def AsJson(self, programId) : 
+
+        roles = []
+
+        for role in self.Roles : 
+            if (role.ProgramId.lower() == programId.lower()) :
+                roles.append(role.AsJson())
+
+        return {
+            "id" : self.Id,
+            "login" : self.Login,
+            "roles" : roles
+        }
+
 
     

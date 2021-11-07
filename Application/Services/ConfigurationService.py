@@ -43,7 +43,7 @@ class ConfigurationService() :
         return self._configurationData['tokenSecretKey']
 
     @property
-    def TokenAlgorithm(self) -> List : 
+    def TokenAlgorithm(self) : 
         return self._configurationData['tokenAlgorithm']
 
         
