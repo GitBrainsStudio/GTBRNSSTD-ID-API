@@ -6,12 +6,11 @@ from Domain.Entities.Role import Role
 
 
 
-class Application(Base) : 
+class Program(Base) : 
 
-    __tablename__ = 'applications'
+    __tablename__ = 'programs'
 
     Id = Column('id', String , primary_key=True)
-    Name = Column('name', String)
     URL =  Column('url', String)
     Description = Column('description', String)
     Roles = relationship("Role", cascade="all, delete-orphan", lazy="joined")
@@ -20,26 +19,23 @@ class Application(Base) :
     def __init__(
         self,
         id:str,
-        name:str,
         url:str,
         description:str,
         roles:List[Role]):
         
         self.Id = id
-        self.Name = name
         self.URL = url
         self.Description = description
         self.Roles = roles
 
     def Update(
         self,
-        name:str,
+        id:str,
         url:str,
         description:str,
         roles:List[Role]) : 
 
-
-        self.Name = name
+        self.Id = id
         self.URL = url
         self.Description = description
         self.Roles = roles

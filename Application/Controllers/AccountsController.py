@@ -1,3 +1,4 @@
+from fastapi.params import Depends
 from Domain.Entities.Account import Account
 from Startup.FastApiService import FastApiService
 from Infrastructure.Services.SessionService import SessionService
@@ -25,35 +26,42 @@ class AccountsController :
             "/accounts/",
             endpoint=self.Create,
             methods=["POST"],
-            # dependencies=[Depends(self._tokenService.VerifyRequest)]
+            dependencies=[Depends(self._tokenService.VerifyRequest)]
         )
         
         self._fastApiService.FastAPI.add_api_route(
             "/accounts/{accountId}",
             endpoint=self.GetById,
             methods=["GET"],
-            # dependencies=[Depends(self._tokenService.VerifyRequest)]
+            dependencies=[Depends(self._tokenService.VerifyRequest)]
+        )
+        
+        self._fastApiService.FastAPI.add_api_route(
+            "/programs/{programId}/accounts/",
+            endpoint=self.GetAllByProgramId,
+            methods=["GET"],
+            dependencies=[Depends(self._tokenService.VerifyRequest)]
         )
 
         self._fastApiService.FastAPI.add_api_route(
             "/accounts/",
             endpoint=self.GetAll,
             methods=["GET"],
-            # dependencies=[Depends(self._tokenService.VerifyRequest)]
+            dependencies=[Depends(self._tokenService.VerifyRequest)]
         )
 
         self._fastApiService.FastAPI.add_api_route(
             "/accounts/",
             endpoint=self.Update,
             methods=["PUT"],
-            # dependencies=[Depends(self._tokenService.VerifyRequest)]
+            dependencies=[Depends(self._tokenService.VerifyRequest)]
         )
 
         self._fastApiService.FastAPI.add_api_route(
             "/accounts/{accountId}",
             endpoint=self.Delete,
             methods=["DELETE"],
-            # dependencies=[Depends(self._tokenService.VerifyRequest)]
+            dependencies=[Depends(self._tokenService.VerifyRequest)]
         )
 
 
@@ -81,6 +89,9 @@ class AccountsController :
 
     async def GetById(self, accountId:str) :         
         return self._sessionService.DBContext.query(Account).filter(Account.Id == accountId).one()
+
+    async def GetAllByProgramId(self, programId:str) : 
+        return self._sessionService.DBContext.query(Account).filter(Account.Roles.any(Role.ProgramId == programId)).all()
 
     async def GetAll(self) : 
         return self._sessionService.DBContext.query(Account).all()

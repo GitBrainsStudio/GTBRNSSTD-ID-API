@@ -4,10 +4,9 @@ from Application.Dtos.Roles.Role import Role
 
 
 
-class Application(BaseModel) : 
+class Program(BaseModel) : 
 
     Id:str
-    Name:str
     URL:str
     Description:str 
     Roles:List[Role]

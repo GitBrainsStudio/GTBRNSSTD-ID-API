@@ -11,18 +11,26 @@ class Role(Base) :
     Id = Column('id', String , primary_key=True)
     Name = Column('name', String)
     Description = Column('description', String)
-    ApplicationId = Column('application_id', String, ForeignKey('applications.id'))
+    ProgramId = Column('program_id', String, ForeignKey('programs.id'))
 
     def __init__(
         self,
         id,
         name,
         description,
-        applicationId) :
+        programId) :
 
         self.Id = id
         self.Name = name
         self.Description = description
-        self.ApplicationId = applicationId
+        self.ProgramId = programId
 
+    def AsJson(self) : 
+
+        return {
+            "id" : self.Id,
+            "name" : self.Name,
+            "description" : self.Description,
+            "programId" : self.ProgramId
+        }
 

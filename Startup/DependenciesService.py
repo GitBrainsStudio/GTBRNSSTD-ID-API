@@ -1,11 +1,12 @@
 from Application.Controllers.AccountsController import AccountsController
+from Application.Controllers.AuthenticationController import AuthenticationController
+from Application.Controllers.ProgramsController import ProgramsController
 from Application.Services.TokenService import TokenService
 from Application.Services.ConfigurationService import ConfigurationService
 from Startup.FastApiService import FastApiService
 from Startup.UvicornService import UvicornService
 from Infrastructure.Services.SessionService import SessionService
 from Application.Controllers.DocumentationController import DocumentationController
-from Application.Controllers.ApplicationsController import ApplicationsController
 
 class DependenciesService() :
 
@@ -66,12 +67,17 @@ class DependenciesService() :
         DocumentationController(
             self.FastApiService
         )
-        ApplicationsController(
+        ProgramsController(
             self.FastApiService,
             self.SessionService,
             self.TokenService
         ),
         AccountsController(
+            self.FastApiService,
+            self.SessionService,
+            self.TokenService
+        )
+        AuthenticationController(
             self.FastApiService,
             self.SessionService,
             self.TokenService

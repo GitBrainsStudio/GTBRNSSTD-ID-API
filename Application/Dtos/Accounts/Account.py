@@ -14,3 +14,8 @@ class Account(BaseModel) :
     Login:str
     Password:str
     Roles:List[Role]
+
+    @property
+    def AsJson() : 
+
+        return {}
