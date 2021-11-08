@@ -1,9 +1,11 @@
-from sqlalchemy import func
+
 from Domain.Entities.Account import Account
 from Startup.FastApiService import FastApiService
 from Infrastructure.Services.SessionService import SessionService
 from Application.Services.TokenService import TokenService
-from Domain.Entities.Role import Role
+from sqlalchemy.orm.exc import NoResultFound
+from fastapi.responses import JSONResponse
+
 
 class AuthenticationController : 
 
@@ -32,11 +34,20 @@ class AuthenticationController :
 
     def Authenticate(self, login:str, password:str, programId:str) : 
 
-        account:Account = self._sessionService.DBContext.query(Account).filter(
-            Account.Login == login, 
-            Account.Password == password, 
-            Account.Roles.any(func.lower(Role.ProgramId) == func.lower(programId))
-            ).one()
+        try :
+
+            account:Account = self._sessionService.DBContext.query(Account).filter(
+                Account.Login == login, 
+                Account.Password == password
+                ).one()
+
+        except NoResultFound : 
+            return JSONResponse (status_code = 400, content = {"message": "Логин или пароль не подходит" }) 
+
+        accessRole = next((role for role in account.Roles if role.ProgramId == programId), None)
+
+        if (accessRole is None) :
+            return JSONResponse (status_code = 400, content = {"message": "Недостаточно прав для входа в приложение" }) 
 
         accountDto = account.AsJson(programId)
         accessToken = self._tokenService.GenerateToken(accountDto)
